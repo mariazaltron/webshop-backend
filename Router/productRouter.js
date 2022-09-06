@@ -4,8 +4,18 @@ const router = new Router();
 
 
 router.get("/", async (req, res, next) => {
-    const products = await Product.findAll();
-    res.send(products)
+    const limit = req.query.limit || 10;
+    const offset = req.query.offset || 0;
+
+    
+    try {
+        
+        const products = await Product.findAll( {limit, offset} );
+        res.send(products);
+    } catch (error) {
+        next(error)
+        
+    }
 })
 
 router.get("/:id", async (req, res, next) => {
